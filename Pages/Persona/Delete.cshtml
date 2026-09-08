@@ -1,0 +1,35 @@
+@page "{id:int}"
+@model HelloWorld.Pages.Persona.DeleteModel
+@{
+    ViewData["Title"] = "Eliminar persona";
+}
+
+<h1>Eliminar persona</h1>
+
+<div class="alert alert-danger">
+    ¿Está seguro de que desea eliminar esta persona?
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Nombre</dt>
+    <dd class="col-sm-9">@Model.Persona.Name</dd>
+
+    <dt class="col-sm-3">País</dt>
+    <dd class="col-sm-9">@Model.Persona.Pais.Name</dd>
+
+    <dt class="col-sm-3">Pasaporte</dt>
+    <dd class="col-sm-9">@(Model.Persona.Pasaporte?.Numero ?? "Sin pasaporte")</dd>
+
+    <dt class="col-sm-3">Materias</dt>
+    <dd class="col-sm-9">
+        @(Model.Persona.Materias.Count == 0
+            ? "Sin materias"
+            : string.Join(", ", Model.Persona.Materias.Select(m => m.Name)))
+    </dd>
+</dl>
+
+<form method="post">
+    <input type="hidden" asp-for="Persona.Id" />
+    <button type="submit" class="btn btn-danger">Confirmar eliminación</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>

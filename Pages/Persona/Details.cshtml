@@ -1,0 +1,44 @@
+@page "{id:int}"
+@model HelloWorld.Pages.Persona.DetailsModel
+@{
+    ViewData["Title"] = "Detalle de persona";
+}
+
+<h1>Detalle de persona</h1>
+
+<dl class="row">
+    <dt class="col-sm-3">Id</dt>
+    <dd class="col-sm-9">@Model.Persona.Id</dd>
+
+    <dt class="col-sm-3">Nombre</dt>
+    <dd class="col-sm-9">@Model.Persona.Name</dd>
+
+    <dt class="col-sm-3">Fecha de nacimiento</dt>
+    <dd class="col-sm-9">@Model.Persona.dob.ToString("dd/MM/yyyy")</dd>
+
+    <dt class="col-sm-3">País</dt>
+    <dd class="col-sm-9">@Model.Persona.Pais.Name</dd>
+
+    <dt class="col-sm-3">Pasaporte</dt>
+    <dd class="col-sm-9">@(Model.Persona.Pasaporte?.Numero ?? "Sin pasaporte")</dd>
+
+    <dt class="col-sm-3">Materias</dt>
+    <dd class="col-sm-9">
+        @if (Model.Persona.Materias.Count == 0)
+        {
+            <span>Sin materias</span>
+        }
+        else
+        {
+            <ul>
+                @foreach (var materia in Model.Persona.Materias.OrderBy(m => m.Name))
+                {
+                    <li>@materia.Name</li>
+                }
+            </ul>
+        }
+    </dd>
+</dl>
+
+<a asp-page="Edit" asp-route-id="@Model.Persona.Id" class="btn btn-warning">Editar</a>
+<a asp-page="Index" class="btn btn-secondary">Volver</a>

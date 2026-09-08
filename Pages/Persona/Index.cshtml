@@ -1,0 +1,65 @@
+@page
+@model HelloWorld.Pages.Persona.IndexModel
+@{
+    ViewData["Title"] = "Personas";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Personas</h1>
+    <a asp-page="Create" class="btn btn-primary">Registrar persona</a>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-success">@Model.Mensaje</div>
+}
+
+@if (Model.Personas.Count == 0)
+{
+    <div class="alert alert-info">No hay personas registradas.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Fecha de nacimiento</th>
+                    <th>País</th>
+                    <th>Pasaporte</th>
+                    <th>Materias</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var persona in Model.Personas)
+                {
+                    <tr>
+                        <td>@persona.Id</td>
+                        <td>@persona.Name</td>
+                        <td>@persona.dob.ToString("dd/MM/yyyy")</td>
+                        <td>@persona.Pais.Name</td>
+                        <td>@(persona.Pasaporte?.Numero ?? "Sin pasaporte")</td>
+                        <td>
+                            @if (persona.Materias.Count == 0)
+                            {
+                                <span>Sin materias</span>
+                            }
+                            else
+                            {
+                                @string.Join(", ", persona.Materias.Select(m => m.Name))
+                            }
+                        </td>
+                        <td class="text-nowrap">
+                            <a asp-page="Details" asp-route-id="@persona.Id" class="btn btn-sm btn-info">Ver</a>
+                            <a asp-page="Edit" asp-route-id="@persona.Id" class="btn btn-sm btn-warning">Editar</a>
+                            <a asp-page="Delete" asp-route-id="@persona.Id" class="btn btn-sm btn-danger">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

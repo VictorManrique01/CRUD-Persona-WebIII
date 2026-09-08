@@ -1,0 +1,17 @@
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace HelloWorld.Migrations
+{
+    public partial class CRUDPersona : Migration
+    {
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+        }
+    }
+}

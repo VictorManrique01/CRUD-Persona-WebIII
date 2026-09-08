@@ -1,0 +1,93 @@
+@page
+@model HelloWorld.Pages.TareasModel
+@{
+    ViewData["Title"] = "Tareas";
+}
+
+<h1>Gestión de Tareas</h1>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-warning">@Model.Mensaje</div>
+}
+
+<h2>Registrar tarea</h2>
+
+
+<form method="post">
+    <div class="form-group mb-3">
+        <label asp-for="Titulo">Título de la tarea</label>
+        <input asp-for="Titulo" class="form-control"  />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Responsable">Responsable</label>
+        <input asp-for="Responsable" class="form-control" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="FechaLimite">Fecha límite</label>
+        <input asp-for="FechaLimite" type="date" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Agregar tarea</button>
+</form>
+
+<hr />
+
+<h2>Tareas registradas</h2>
+
+@if (Model.Tareas.Count == 0)
+{
+    <p>No hay tareas registradas todavía.</p>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Título</th>
+                <th>Responsable</th>
+                <th>Fecha límite</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var tarea in Model.Tareas)
+            {
+                <tr>
+                    <td>@tarea.Id</td>
+                    <td>@tarea.Titulo</td>
+                    <td>@tarea.Responsable</td>
+                    <td>@tarea.FechaLimite.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        @if (tarea.Completada)
+                        {
+                            <span class="badge bg-success">Completada</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Pendiente</span>
+                        }
+                    </td>
+                    <td>
+                        @if (!tarea.Completada)
+                        {
+                            <form method="post" asp-page-handler="Completar" class="d-inline">
+                                <input type="hidden" name="id" value="@tarea.Id" />
+                                <button type="submit" class="btn btn-sm btn-success">Completar</button>
+                            </form>
+                        }
+
+                        <form method="post" asp-page-handler="Eliminar" class="d-inline">
+                            <input type="hidden" name="id" value="@tarea.Id" />
+                            <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
